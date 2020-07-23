@@ -1,6 +1,6 @@
 # events-reservation-system-backend
 
-## Entity Relationship Diagram
-![ERD Image](https://app.lucidchart.com/publicSegments/view/25dcfd3b-d0e7-4fb4-9352-6396d6f5310e/image.png)
+## Class Diagram
+![Class Image](https://app.lucidchart.com/publicSegments/view/991408e3-a671-47f6-92f5-d32692a955cb/image.png)
 
 > Current code is based on : https://levelup.gitconnected.com/crud-restful-api-with-go-gorm-jwt-postgres-mysql-and-testing-460a85ab7121
