@@ -11,12 +11,18 @@ import (
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 
 	"github.com/mlph-kvillegas/events-reservation-system-backend/api/models"
+//	jwt "github.com/dgrijalva/jwt-go"
 )
 
+type ResponseReturn struct{
+	StatusCode int `json:"statuscode"`
+	StatusMessage string `json:"statusmessage"`
+	Auth string `json:"auth"`
+};
 type Server struct {
 	DB     *gorm.DB
 	Router *mux.Router
-}
+};
 
 func (server *Server) Initialize(Dbdriver, DbUser, DbPassword, DbPort, DbHost, DbName string) {
 
