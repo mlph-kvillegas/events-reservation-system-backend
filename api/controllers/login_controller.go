@@ -11,12 +11,11 @@ import (
 //	formaterror "github.com/mlph-kvillegas/events-reservation-system-backend/api/utils"
 	"golang.org/x/crypto/bcrypt"
 
-	"fmt"
+	
 )
 
 func (server *Server) Login(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Access-Control-Allow-Origin", "http://localhost:3000");
-	w.Header().Set("Access-Control-Allow-Methods", "POST");
+	server.CorsHeader(w);
 	body, err := ioutil.ReadAll(r.Body)
 	if err != nil {
 		//responses.ERROR(w, http.StatusUnprocessableEntity, err)
@@ -42,26 +41,21 @@ func (server *Server) Login(w http.ResponseWriter, r *http.Request) {
 	//	responses.ERROR(w, http.StatusUnprocessableEntity, formattedError)
 	//	return
 	//}
-	fmt.Println(token);
-	urlsJson, jsn_err := json.Marshal( token)
-
-	if jsn_err != nil {
-        fmt.Println(jsn_err)
-       // return
-	}
 	
-	w.Header().Set("Content-Type", "application/json");
-	fmt.Println(string(urlsJson));
+	
+	
+	urlsJson:=token.ToJson()
+	
 	responses.JSON(w, http.StatusOK, string(urlsJson))
 }
 
 //func (server *Server) SignIn(email, password string) (string, error) {
-func (server *Server) SignIn(email, password string) *ResponseReturn {	
+func (server *Server) SignIn(email string, password string) *ResponseReturnUserAuth {	
 
 	var err error
 
 	user := models.User{}
-	req_data_format := &ResponseReturn{
+	req_data_format := &ResponseReturnUserAuth{
 		StatusCode:0,
 		StatusMessage:"",
 	}
