@@ -18,21 +18,21 @@ func (server *Server) Login(w http.ResponseWriter, r *http.Request) {
 	server.CorsHeader(w);
 	body, err := ioutil.ReadAll(r.Body)
 	if err != nil {
-		//responses.ERROR(w, http.StatusUnprocessableEntity, err)
-		//return
+		responses.ERROR(w, http.StatusUnprocessableEntity, err)
+		return
 	}
 	user := models.User{}
 	err = json.Unmarshal(body, &user)
 	if err != nil {
-		//responses.ERROR(w, http.StatusUnprocessableEntity, err)
-		//return
+		responses.ERROR(w, http.StatusUnprocessableEntity, err)
+		return
 	}
 
 	user.Prepare()
 	err = user.Validate("login")
 	if err != nil {
-		//responses.ERROR(w, http.StatusUnprocessableEntity, err)
-		//return
+		responses.ERROR(w, http.StatusUnprocessableEntity, err)
+		return
 	}
 	//token, err := server.SignIn(user.Email, user.Password)
 	token := server.SignIn(user.Email, user.Password)
