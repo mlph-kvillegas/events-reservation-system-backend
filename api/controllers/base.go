@@ -4,19 +4,27 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"encoding/json"
 
+	"os"
 	"github.com/gorilla/mux"
 	"github.com/jinzhu/gorm"
 
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 
 	"github.com/mlph-kvillegas/events-reservation-system-backend/api/models"
+//	jwt "github.com/dgrijalva/jwt-go"
 )
 
+type ResponseReturnUserAuth struct{
+	StatusCode int `json:"statuscode"`
+	StatusMessage string `json:"statusmessage"`
+	Auth string `json:"auth"`
+};
 type Server struct {
 	DB     *gorm.DB
 	Router *mux.Router
-}
+};
 
 func (server *Server) Initialize(Dbdriver, DbUser, DbPassword, DbPort, DbHost, DbName string) {
 
@@ -37,8 +45,23 @@ func (server *Server) Initialize(Dbdriver, DbUser, DbPassword, DbPort, DbHost, D
 
 	server.initializeRoutes()
 }
+func (server *Server) CorsHeader(w http.ResponseWriter) {
+	w.Header().Set("Access-Control-Allow-Origin", os.Getenv("CORS_URL"));
+	w.Header().Set("Access-Control-Allow-Methods", "POST");
+	w.Header().Set("Connection", "Keep-Alive");
+	w.Header().Set("Content-Type", "application/json");
 
+}
 func (server *Server) Run(addr string) {
 	fmt.Println("Listening to port 8080")
 	log.Fatal(http.ListenAndServe(addr, server.Router))
+}
+func(m *ResponseReturnUserAuth ) ToJson() string{
+	urlsJson, jsn_err := json.Marshal( m)
+
+	if jsn_err != nil {
+        fmt.Println(jsn_err)
+	}
+
+	return string(urlsJson);
 }
